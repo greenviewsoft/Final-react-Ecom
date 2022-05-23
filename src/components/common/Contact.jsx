@@ -30,11 +30,11 @@ export class Contact extends Component {
             <Col className="p-0 Desktop m-0" md={6} lg={6} sm={6} xs={6}>
                  <br></br><br></br>
            <p className="section-title-contact">
-           1635 Franklin Street Montgomery, Near Sherwood Mall. AL 36104
-Email: Support@easylearningbd.com
+          15 katasur mohammadpur, Dhaka
+Email: Support@sultanshopbd.com
            </p>
 
-           <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3651.8127931163976!2d90.35745342916488!3d23.754054345270326!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3755bf55418a5563%3A0xc5c71bb308933571!2sSultan%20Food%20Place!5e0!3m2!1sen!2sbd!4v1653300474061!5m2!1sen!2sbd" width="600" height="450" styles="border:0;" allowfullscreen="" loading="lazy"></iframe>
+           <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3651.8127931163976!2d90.35745342916488!3d23.754054345270326!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3755bf55418a5563%3A0xc5c71bb308933571!2sSultan%20Food%20Place!5e0!3m2!1sen!2sbd!4v1653300474061!5m2!1sen!2sbd" width="550" height="450" styles="border:0;" allowfullscreen="" loading="lazy"></iframe>
 
                          </Col>
                     </Row>

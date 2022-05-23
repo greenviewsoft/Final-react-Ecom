@@ -1,5 +1,6 @@
 import React, { Component, Fragment } from 'react'
 import { Button, Card, Col, Container, Row } from 'react-bootstrap'
+import { Link } from 'react-router-dom'
 
 export class FeaturedProducts extends Component {
   render() {
@@ -12,6 +13,8 @@ export class FeaturedProducts extends Component {
           </div>
           <Row>
             <Col className="p-1" key={1} xl={2} lg={2} md={2} sm={4} xs={6} >
+            <Link to="/productdetails">
+
               <Card className="image-box card">
                 <img className="center" src="https://rukminim2.flixcart.com/image/416/416/kqjtd3k0/mobile/o/4/x/c11-2021-rmx3231-realme-original-imag4j4yrdt7d9cj.jpeg?q=70" />
                 <Card.Body>
@@ -19,6 +22,7 @@ export class FeaturedProducts extends Component {
                   <p className="product-price-on-card" >Price : $120</p>
                 </Card.Body>
               </Card>
+              </Link>
             </Col>
 
 
