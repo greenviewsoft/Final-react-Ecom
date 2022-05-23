@@ -24,7 +24,7 @@ export class HomeSlider extends Component {
           {
               breakpoint: 1024,
               settings: {
-                  slidesToShow: 4,
+                  slidesToShow: 1,
                   slidesToScroll: 3,
                   infinite: true,
                   dots: true

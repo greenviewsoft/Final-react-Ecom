@@ -1,23 +1,17 @@
-import React, { Component, Fragment } from 'react'
-import {Switch, Router,Route } from 'react-router-dom'
-import HomePage from '../pages/HomePage'
+import React, { Component, Fragment } from 'react';
+import HomePage from '../pages/HomePage';
+import UserLoginPage from '../pages/UserLoginPage';
+import { Routes, Route, Link } from "react-router-dom";
 
-export class AppRoute extends Component {
-  render() {
-    return (
-      <Fragment>
-        <Switch>
-<Route exact to="/" component={HomePage} />
-
-
-        </Switch>
-
+function AppRoute() {
+  return (
+    <Fragment>
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="login" element={<UserLoginPage />} />
+      </Routes>
       </Fragment>
-
-
-
-    )
-  }
+  )
 }
 
 export default AppRoute
