@@ -1,7 +1,7 @@
-import React, { Component, Fragment } from 'react';
+import React, { Fragment } from 'react';
 import HomePage from '../pages/HomePage';
 import UserLoginPage from '../pages/UserLoginPage';
-import { Routes, Route, Link } from "react-router-dom";
+import { Routes, Route,  } from "react-router-dom";
 import ContactPage from '../pages/ContactPage';
 import PurchasePage from '../pages/PurchasePage';
 import PrivacyPage from '../pages/PrivacyPage';
@@ -10,6 +10,7 @@ import AboutPage from '../pages/AboutPage';
 import ProductDetailsPage from '../pages/ProductDetailsPage';
 import NotificationPage from '../pages/NotificationPage';
 import FavouritePage from '../pages/FavouritePage'
+import CartPage from '../pages/CartPage';
 
 function AppRoute() {
   return (
@@ -25,6 +26,7 @@ function AppRoute() {
         <Route path="/productdetails" element={<ProductDetailsPage />} />
         <Route path="/notification" element={<NotificationPage />} />
         <Route path="/favourite" element={<FavouritePage />} />
+        <Route path="/cart" element={<CartPage/>} />
       </Routes>
       </Fragment>
   )
