@@ -13,6 +13,7 @@ import FavouritePage from '../pages/FavouritePage'
 import CartPage from '../pages/CartPage';
 import ProductCategoryPage from '../pages/ProductCategoryPage';
 import { BrowserRouter } from 'react-router-dom';
+import ProductsSubCategoryPage from '../pages/ProductsSubCategoryPage';
 
 function AppRoute() {
   return (
@@ -29,12 +30,17 @@ function AppRoute() {
 
         <Route exact path="/refund"   component={RefundPage}  />
         <Route exact path="/about"  component={AboutPage}  /> 
-        <Route exact path="/productdetails" component={ProductDetailsPage}  />
+        <Route exact path="/productdetails/:code" component={ProductDetailsPage}  />
         <Route exact path="/notification" component={NotificationPage} />
         <Route exact path="/favourite"   component={FavouritePage} />
         <Route exact path="/cart"   component={CartPage}         />
 
-        <Route exact path="/productcategory/:category" component={ProductCategoryPage} />
+          <Route exact path="/productcategory/:category" component={ProductCategoryPage} />
+          
+          <Route exact path="/productsubcategory/:category/:subcategory" component={ProductsSubCategoryPage} />
+          
+
+
       </Switch>
 
       </BrowserRouter>
