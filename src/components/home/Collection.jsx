@@ -3,13 +3,15 @@ import { Container, Row, Col, Card } from 'react-bootstrap'
 import AppURL from '../../api/AppURL';
 import axios from 'axios'
 import { Link } from 'react-router-dom';
-
+import CollectionLoading from '../PlaceHolder/CollectionLoading';
 
 class Collection extends Component {
      constructor() {
           super();
           this.state = {
-               ProductData: []
+               ProductData:[],
+               isLoading:"",
+               mainDiv:"d-none"    
           }
      }
 
@@ -17,7 +19,7 @@ class Collection extends Component {
      componentDidMount() {
           axios.get(AppURL.ProductListByRemark("COLLECTION")).then(response => {
 
-               this.setState({ ProductData: response.data });
+               this.setState({ProductData:response.data,isLoading:"d-none",mainDiv:" "});   
 
           }).catch(error => {
 
@@ -62,6 +64,9 @@ class Collection extends Component {
           });
           return (
                <Fragment>
+                    <CollectionLoading  isLoading={this.state.isLoading} />
+
+<div className={this.state.mainDiv}>
                     <Container className="text-center" fluid={true}>
                          <div className="section-title text-center mb-55"><h2> PRODUCT COLLECTION</h2>
                               <p>Some Of Our Exclusive Collection, You May Like</p>
@@ -70,7 +75,8 @@ class Collection extends Component {
                          <Row>
                               {MyView}
                          </Row>
-                    </Container>
+                         </Container>
+                         </div>
                </Fragment>
           )
      }
