@@ -30,7 +30,12 @@ class AppURL {
           return this.BaseURL+"/productdetails/"+code;
      }
      
-     static NotificationHistory = this.BaseURL+"/notification"
+     static NotificationHistory = this.BaseURL + "/notification"
+     
+
+     static ProductBySearch(searchkey){
+          return this.BaseURL+"/search/"+searchkey;
+     }
 
 }
 
