@@ -1,11 +1,56 @@
 import React, { Component, Fragment } from 'react'
 import { Container,Row,Col, Form,Button } from 'react-bootstrap'
-import { Link } from 'react-router-dom'
 import forget from '../../assets/images/forgetpass.png'
+import axios from 'axios'
+import AppURL from '../../api/AppURL';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 //children for component for ResetPasswordPage
 
- class ResetPassword extends Component {
+class ResetPassword extends Component {
+
+     constructor(){
+          super(); 
+          this.state={
+               token:'',
+               email:'',
+               password:'',
+               password_confirmation:'',
+               message:'' 
+
+          }
+     } 
+
+     // Reset Form Submit Method 
+     formSubmit = (e) => {
+          e.preventDefault();
+          const data={
+               token:this.state.token,
+               email:this.state.email,
+               password:this.state.password,
+               password_confirmation:this.state.password_confirmation
+          }
+
+          axios.post(AppURL.UserResetPassword,data).then(response =>{ 
+
+               this.setState({message:response.data.message})
+
+               toast.success(this.state.message,{
+                    position: "top-right"
+               });
+               document.getElementById("fromreset").reset();
+
+          }).catch(error=>{
+               this.setState({message:error.response.data.message})
+               toast.error(this.state.message,{
+                    position: "top-right"
+               });
+          }); 
+
+     }
+
+
   render() {
     return (
         <Fragment>
@@ -15,19 +60,19 @@ import forget from '../../assets/images/forgetpass.png'
 
              <Row className="text-center">
       <Col className="d-flex justify-content-center" md={6} lg={6} sm={12} xs={12}>
-        <Form className="onboardForm">
+        <Form className="onboardForm" onSubmit={this.formSubmit} id="fromreset" >
              <h4 className="section-title-login"> Reset Password</h4> 
 
-             <input className="form-control m-2" type="text" placeholder="Enter Your Pin Code" />
+             <input className="form-control m-2" type="text" placeholder="Enter Your Pin Code" onChange={(e)=>{this.setState({token:e.target.value})}} />
 
-             <input className="form-control m-2" type="email" placeholder="Enter Your Email" />
+             <input className="form-control m-2" type="email" placeholder="Enter Your Email" onChange={(e)=>{this.setState({email:e.target.value})}} />
 
-             <input className="form-control m-2" type="password" placeholder="Enter Your New Password" />
+             <input className="form-control m-2" type="password" placeholder="Enter Your New Password" onChange={(e)=>{this.setState({password:e.target.value})}} />
 
-             <input className="form-control m-2" type="password" placeholder="Confirm Your Password" />
+             <input className="form-control m-2" type="password" placeholder="Confirm Your Password" onChange={(e)=>{this.setState({password_confirmation:e.target.value})}} />
 
 
-             <Button className="btn btn-block m-2 site-btn-login"> Reset Password </Button>
+             <Button type="submit" className="btn btn-block m-2 site-btn-login"> Reset Password </Button>
 
 
         </Form>
@@ -47,7 +92,8 @@ import forget from '../../assets/images/forgetpass.png'
 
                   </Col>
              </Row>
-        </Container>
+              </Container>
+              <ToastContainer />  
    </Fragment>
     )
   }
