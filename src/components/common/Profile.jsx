@@ -1,4 +1,5 @@
 import React, { Component, Fragment } from 'react'
+import { Redirect } from 'react-router-dom';
 
  class Profile extends Component {
    render() {
@@ -9,6 +10,12 @@ import React, { Component, Fragment } from 'react'
          name = this.props.user.name;
          email = this.props.user.email;
      }
+
+     // if user is not logged in, redirect to login page
+     if (!localStorage.getItem('token')) {
+        return <Redirect to="/login"/>
+     }
+      
      
     return (
         <Fragment> 
