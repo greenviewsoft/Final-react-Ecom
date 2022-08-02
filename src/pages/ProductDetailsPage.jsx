@@ -4,7 +4,6 @@ import FooterMobile from '../components/common/FooterMobile'
 import NavMenuDesktop from '../components/common/NavMenuDesktop'
 import NavMenuMobile from '../components/common/NavMenuMobile'
 import ProductDetails from '../components/ProductDetails/ProductDetails'
-import SuggestedProduct from '../components/ProductDetails/SuggestedProduct'
 import axios from 'axios'
 import AppURL from '../api/AppURL'
 import SliderLoading from '../components/PlaceHolder/SliderLoading'
@@ -48,7 +47,7 @@ class ProductDetailsPage extends Component {
                     </div>                       
 
                      <SliderLoading isLoading={this.state.isLoading} />
-
+                         
 
                     <div className="Desktop">
                     <FooterDesktop/>
@@ -76,7 +75,7 @@ class ProductDetailsPage extends Component {
                     </div>                       
 
                     <ProductDetails data={this.state.ProductData} /> 
-                    <SuggestedProduct/>
+                 
 
                     <div className="Desktop">
                     <FooterDesktop/>
