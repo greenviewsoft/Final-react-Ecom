@@ -10,6 +10,7 @@ class FavouritePage extends Component {
         window.scroll(0,0)
    }
   render() {
+    const User = this.props.user;
     return (
       <div>
         <Fragment> 
@@ -21,7 +22,7 @@ class FavouritePage extends Component {
                <NavMenuMobile />  
                </div>                       
 
-               <Favourite /> 
+               <Favourite user={User} /> 
 
                <div className="Desktop">
                <FooterDesktop/>

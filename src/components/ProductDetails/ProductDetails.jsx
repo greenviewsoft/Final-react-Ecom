@@ -2,11 +2,14 @@ import React, { Component, Fragment } from 'react'
 import { Container, Row, Col, Form, Button } from 'react-bootstrap'
 import ReactDOM from 'react-dom'
 import Breadcrumb from 'react-bootstrap/Breadcrumb'
-import { Link } from 'react-router-dom'
+import { Link, Redirect } from 'react-router-dom'
 import 'react-inner-image-zoom/lib/InnerImageZoom/styles.css';
 import InnerImageZoom from 'react-inner-image-zoom';
 import SuggestedProduct from './SuggestedProduct'
 import ReviewList from './ReviewList'
+import cogoToast from 'cogo-toast';
+import AppURL from '../../api/AppURL'
+import axios from 'axios'
 
 class ProductDetails extends Component {
 
@@ -14,6 +17,17 @@ class ProductDetails extends Component {
           super();
           this.state = {
                previewImg: "0",
+               isSize:null,
+               isColor:null,
+               color:"",
+               size:"",
+               quantity:"",
+               productCode:null,
+               addToCart: "Add To Cart",
+               PageRefreshStatus: false,
+               addToFav:"Favorite",
+             
+               
           }
      }
 
@@ -22,8 +36,123 @@ class ProductDetails extends Component {
           this.setState({previewImg: imgSrc});
      }
 
+
+     addToCart = () => {
+
+          let isSize = this.state.isSize;
+          let isColor = this.state.isColor;
+          let color = this.state.color;
+          let size = this.state.size;
+          let quantity = this.state.quantity;
+          let productCode = this.state.productCode;
+          let email = this.props.user.email;
+         
+          if(isColor==="YES" && color.length===0){
+               cogoToast.error('Please Select Color',{position:'top-right'});
+
+          }
+          else if(isSize==="YES" && size.length===0){
+               cogoToast.error('Please Select Size',{position:'top-right'});
+          } 
+          else if(quantity.length===0){
+               cogoToast.error('Please Select Quantity',{position:'top-right'});
+          }
+          else if (!localStorage.getItem('token')){
+               cogoToast.warn('Please You have to Login First',{position:'top-right'});
+          }
+          else {
+               this.setState({ addToCart: "Adding..." });
+               let MyFormData = new FormData();
+               MyFormData.append('color',color);
+               MyFormData.append('size',size);
+               MyFormData.append('quantity',quantity);
+               MyFormData.append('product_code',productCode);
+               MyFormData.append('email',email);
+
+               axios.post(AppURL.addToCart,MyFormData).then(response =>{
+                    if(response.data===1){
+                         cogoToast.success("Product Added Successfully",{position:'top-right'});
+                         this.setState({ addToCart: "Add To Cart" })
+                         this.setState({ PageRefreshStatus:true });
+
+                    }
+                    else{
+                         cogoToast.error("Your Request is not done ! Try Again",{position:'top-right'});
+                         this.setState({addToCart:"Add To Cart"})
+                    }
+
+               }).catch(error=>{
+                    cogoToast.error("Your Request is not done ! Try Aagain",{position:'top-right'});
+                         this.setState({addToCart:"Add To Cart"})
+
+               });
+
+          }
+          
+
+      }// end add to cart method
+
+     
+      addToFav = () => { 
+           this.setState({ addToFav: "Adding..." })
+           let productCode = this.state.productCode;
+           let email = this.props.user.email;
+
+           if(!localStorage.getItem('token')){
+                cogoToast.warn('Please You have to Login First',{position:'top-right'});
+           }
+           else {
+                
+               axios.get(AppURL.AddFavourit(productCode,email)).then(response =>{
+                    if(response.data===1){
+                         cogoToast.success("Product  In Favorites Added",{position:'top-right'});
+                         this.setState({ addToFav: "Favorite" })
+                    
+
+                    }
+                    else{
+                         cogoToast.error("Your Request is not done ! Try Again",{position:'top-right'});
+                         this.setState({addToFav:"Favorite"})
+                    }
+
+               }).catch(error=>{
+                    cogoToast.error("Your Request is not done ! Try Aagain",{position:'top-right'});
+                         this.setState({addToFav:"Favorite"})
+
+               });
+           }
+
+     }
+     
+     
+      colorOnChange = (event) => {
+          let color = event.target.value;
+          //  alert(color);
+          this.setState({color:color})
+     }
+
+     sizeOnChange = (event) => {
+          let size = event.target.value;
+          // alert(size);
+          this.setState({size:size})
+     }
+
+     quantityOnChange = (event) => {
+          let quantity = event.target.value;
+          this.setState({quantity:quantity})
+     }
+     PageRefresh = () => {
+          if (this.state.PageRefreshStatus === true) { 
+               let URL = window.location;
+               return (
+                    <Redirect to={URL} />
+               )
+          }
+      }
+
+
      PriceOption(price, special_price) {
-          if (special_price == "na") {
+          if (special_price=="na") {
                return (
                     <p className="product-price-on-card"> Price : {price}$ </p>
                )
@@ -93,7 +222,27 @@ class ProductDetails extends Component {
                SizeDiv = "d-none"
           }
 
+          if (this.state.isSize === null) {
+               if (size != "na") {
+                   this.setState({ isSize: "YES" })
+               } else {
+                    this.setState({ isSize: "NO" })
+         }
+          }
+          
 
+          if (this.state.isColor === null) {
+               if (size != "na") {
+                   this.setState({ isColor: "YES" })
+               } else {
+                    this.setState({ isColor: "NO" })
+         }
+       }
+
+          if (this.state.productCode === null) {
+               this.setState({ productCode:product_code})
+          }
+          
           return (
                <Fragment>
                     <Container className="BetweenTwoSection">
@@ -155,7 +304,7 @@ class ProductDetails extends Component {
 
                                              <div className={ColorDiv}>
                                                   <h6 className="mt-2"> Choose Color  </h6>
-                                                  <select className="form-control form-select">
+                                                  <select onChange={this.colorOnChange} className="form-control form-select">
                                                        <option>Choose Color</option>
                                                        {ColorOption}
                                                   </select>
@@ -164,7 +313,7 @@ class ProductDetails extends Component {
 
                                              <div className={SizeDiv}>
                                                   <h6 className="mt-2"> Choose Size  </h6>
-                                                  <select className="form-control form-select">
+                                                  <select onChange={this.sizeOnChange} className="form-control form-select">
                                                        <option>Choose Size</option>
                                                        {SizeOption}
                                                   </select>
@@ -172,7 +321,7 @@ class ProductDetails extends Component {
 
                                              <div className="" >
                                                   <h6 className="mt-2"> Choose Quantity  </h6>
-                                                  <select className="form-control form-select">
+                                                  <select onChange={this.quantityOnChange}  className="form-control form-select">
                                                        <option>Choose Quantity</option>
                                                        <option value="01">01</option>
                                                        <option value="02">02</option>
@@ -190,9 +339,9 @@ class ProductDetails extends Component {
 
 
                                              <div className="input-group mt-3">
-                                                  <button className="btn site-btn m-1 "> <i className="fa fa-shopping-cart"></i>  Add To Cart</button>
-                                                  <button className="btn btn-primary m-1"> <i className="fa fa-car"></i> Order Now</button>
-                                                  <button className="btn btn-primary m-1"> <i className="fa fa-heart"></i> Favourite</button>
+                                             <button onClick={this.addToCart} className="btn site-btn m-1 "> <i className="fa fa-shopping-cart"></i>  {this.state.addToCart} </button>
+                                             <button className="btn btn-primary m-1"> <i className="fa fa-car"></i> Order Now</button>
+                                             <button onClick={this.addToFav} className="btn btn-primary m-1"> <i className="fa fa-heart"></i> {this.state.addToFav} </button>
                                              </div>
                                         </Col>
                                    </Row>
@@ -215,6 +364,7 @@ class ProductDetails extends Component {
                     </Container>
 
                     <SuggestedProduct subcategory={subcategory} />
+                    {this.PageRefresh()}
 
                </Fragment>
           )

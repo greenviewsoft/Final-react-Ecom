@@ -2,12 +2,13 @@ import React, { Component, Fragment } from 'react'
 import {Navbar,Container, Row, Col,Button} from 'react-bootstrap';
 import Logo from '../../assets/images/logo.png'
 import Bars from '../../assets/images/bars.png';
-
 import {
 
   Link, Redirect
 } from "react-router-dom";
 import MegaMenuAll from '../home/MegaMenuAll';
+import axios from 'axios';
+import AppURL from '../../api/AppURL';
 
 
  class NavMenuDesktop extends Component {
@@ -18,8 +19,9 @@ import MegaMenuAll from '../home/MegaMenuAll';
          SideNavState: "sideNavClose",
       ContentOverState: "ContentOverlayClose",
       Searchkey: "",
-      SearchRedirectStatus: false
-      
+      SearchRedirectStatus: false,
+      cartCount: 0,
+      FavCount:0,
     }
 
     this.SearchOnChange = this.SearchOnChange.bind(this);
@@ -27,7 +29,21 @@ import MegaMenuAll from '../home/MegaMenuAll';
     this.searchRedirect = this.searchRedirect.bind(this);
 }
 
-   
+componentDidMount(){
+  let product_code = this.props.product_code;
+  axios.get(AppURL.CartCount(product_code)).then((response)=>{
+       this.setState({cartCount:response.data})
+
+  })
+
+
+  let product_code2 = this.props.product_code2;
+  axios.get(AppURL.FavCount(product_code2)).then((response)=>{
+       this.setState({FavCount:response.data})
+
+  })
+}
+
    logout = () => {
 
      localStorage.clear();
@@ -92,13 +108,13 @@ SideNavOpenClose=()=>{
        buttons = (
          
          <div>  
-            <Link to="/favourite" className="btn"><i className="fa h4 fa-heart"></i><sup><span className="badge text-white bg-danger">3</span></sup> </Link>
+            <Link to="/favourite" className="btn"><i className="fa h4 fa-heart"></i><sup><span className="badge text-white bg-danger">{this.state.FavCount}</span></sup> </Link>
        <Link to="/notification" className="btn"><i className="fa h4 fa-bell"></i><sup><span className="badge text-white bg-danger">5</span></sup> </Link>                   
        <a className="btn"> <i className="fa h4 fa-mobile-alt"> </i> </a>
                   <Link to="/profile" className="h4 btn">  Profile    </Link>   
                   <Link to="/" onClick={this.logout} className="h4 btn">Logout</Link>
 
-       <Link to="/cart" className="cart-btn"><i className="fa fa-shopping-cart"></i> 3 Items </Link>
+       <Link to="/cart" className="cart-btn"><i className="fa fa-shopping-cart"></i> {this.state.cartCount} Items </Link>
 
          </div>
        )
@@ -107,13 +123,13 @@ SideNavOpenClose=()=>{
       buttons = (
          
         <div>  
-           <Link to="/favourite" className="btn"><i className="fa h4 fa-heart"></i><sup><span className="badge text-white bg-danger">3</span></sup> </Link>
+           <Link to="/favourite" className="btn"><i className="fa h4 fa-heart"></i><sup><span className="badge text-white bg-danger">0</span></sup> </Link>
       <Link to="/notification" className="btn"><i className="fa h4 fa-bell"></i><sup><span className="badge text-white bg-danger">5</span></sup> </Link>                   
       <a className="btn"> <i className="fa h4 fa-mobile-alt"> </i> </a>
                  <Link to="/login" className="h4 btn">  Login    </Link>   
                  <Link to="/register" className="h4 btn">REGISTER</Link>
 
-      <Link to="/cart" className="cart-btn"><i className="fa fa-shopping-cart"></i> 3 Items </Link>
+      <Link to="/cart" className="cart-btn"><i className="fa fa-shopping-cart"></i> 0 Items </Link>
 
         </div>
       )
