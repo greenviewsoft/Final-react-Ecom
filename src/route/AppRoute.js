@@ -22,6 +22,7 @@ import ResetPasswordPage from '../pages/ResetPasswordPage';
 import ProfilePage from '../pages/ProfilePage';
 import axios from 'axios' 
 import NavMenuDesktop from '../components/common/NavMenuDesktop';
+import OrderListPage from '../pages/OrderListPage';
 
 class AppRoute extends Component {
 
@@ -90,7 +91,12 @@ class AppRoute extends Component {
                                         <Route exact path="/forget" render={(props) => <ForgetPasswordPage {...props} key={Date.now()} />} />
 
                                         <Route exact path="/reset/:id" render={(props) => <ResetPasswordPage {...props} key={Date.now()} />} />
+
                                         <Route exact path="/profile" render={(props) => <ProfilePage user={this.state.user} setUser={this.setUser}   {...props} key={Date.now()} />} />
+
+                                
+                                        <Route exact path="/orderlist/" render={(props) => <OrderListPage {...props} key={Date.now()
+                                        } />} />
 
                                 </Switch>
 

@@ -12,7 +12,13 @@ class Cart extends Component {
                ProductData:[],
                isLoading:"",
                mainDiv:"d-none",
-               PageRefreshStatus:false,
+               PageRefreshStatus: false,
+               PageRedirectStatus:false,
+               confirmBtn:"Confirm Order",
+               city:"",
+               payment:"",
+               name:"",
+               address:""
           }
      }
      componentDidMount(){
@@ -58,10 +64,10 @@ class Cart extends Component {
               cogoToast.success("Item Quantity Increased",{position:'top-right'}); 
               this.setState({PageRefreshStatus:true})   
          }else{
-              cogoToast.error("Your Request is not done ! Try Aagain",{position:'top-right'});
+              cogoToast.error("Your Request is not done ! Try Again",{position:'top-right'});
          }
               }).catch(error=>{
-                   cogoToast.error("Your Request is not done ! Try Aagain",{position:'top-right'});
+                   cogoToast.error("Your Request is not done ! Try Again",{position:'top-right'});
 
               });
 
@@ -76,16 +82,96 @@ class Cart extends Component {
               cogoToast.success("Item Quantity Decreased",{position:'top-right'}); 
               this.setState({PageRefreshStatus:true})   
          }else{
-              cogoToast.error("Your Request is not done ! Try Aagain",{position:'top-right'});
+              cogoToast.error("Your Request is not done ! Try Again",{position:'top-right'});
          }
               }).catch(error=>{
-                   cogoToast.error("Your Request is not done ! Try Aagain",{position:'top-right'});
+                   cogoToast.error("Your Request is not done ! Try Again",{position:'top-right'});
 
               });
 
-         } // End ItemMinus Method 
+     } // End ItemMinus Method
+     
+     cityOnChange = (event) => {
+          let city = event.target.value;
+          this.setState({city:city})
+     }
+
+     paymentMethodOnChange = (event) => {
+      let payment = event.target.value;
+      this.setState({payment:payment})
+ }
+
+ nameOnChange = (e) => {
+      let name = e.target.value;
+      this.setState({name:name})
+ }
+
+ addressOnChange = (event) => {
+      let address = event.target.value;
+      this.setState({address:address})
+ }
+
+ confirmOnClick = () => {
+     let city = this.state.city;
+     let payment = this.state.payment;
+     let name = this.state.name;
+     let address = this.state.address;
+     let email = this.props.user.email;
+
+     if(city.length===0){
+          cogoToast.error("Please Select City",{position:'top-right'});
+     }
+     else if(payment.length===0){
+          cogoToast.error("Please Select Payment",{position:'top-right'});
+     }
+     else if(name.length===0){
+          cogoToast.error("Please Select Your Name",{position:'top-right'});
+     }
+     else if(address.length===0){
+          cogoToast.error("Please Select Your Address",{position:'top-right'});
+     }
+     else {
+          
+
+          let invoice = new Date().getTime();
+          let MyFromData = new FormData();
+          MyFromData.append('city',city)
+          MyFromData.append('payment_method',payment)
+          MyFromData.append('name',name)
+          MyFromData.append('delivery_address',address)
+          MyFromData.append('email',email)
+          MyFromData.append('invoice_no',invoice)
+          MyFromData.append('delivery_charge',"00");
+
+axios.post(AppURL.CartOrder,MyFromData).then(response =>{ 
+
+               if(response.data===1){
+                    cogoToast.success("Order has been created successfully",{position:'top-right'}); 
+                    this.setState({PageRedirectStatus:true})   
+               }else{
+                    cogoToast.error("Your Request is not done ! Try Again",{position:'top-right'});
+               }
+                    }).catch(error=>{
+                         cogoToast.error("Your Request is not done ! Try Again",{position:'top-right'});
+      
+                    });
+
+     }
 
 
+
+
+ } // edn confirms order method
+
+     
+ PageRedirect = () => {
+     if(this.state.PageRedirectStatus===true){
+          return (
+               <Redirect to="/orderlist" />
+          )
+     
+     }
+}
      
      render() {
           const MyList = this.state.ProductData;
@@ -151,35 +237,36 @@ class Cart extends Component {
 <div className="row">
 <div className="col-md-12 p-1 col-lg-12 col-sm-12 col-12">
      <label className="form-label">Choose City</label>
-     <select className="form-control">
+     <select onChange={this.cityOnChange} className="form-control">
      <option value="">Choose</option>
-     <option value="Dhaka">Assam</option>
-     <option value="Dhaka">Bihar </option>
-     <option value="Dhaka">Goa </option>
-     <option value="Dhaka">Gujarat </option>
-     <option value="Dhaka">Himachal Pradesh </option>
-     <option value="Dhaka">Punjab  </option>
+     <option value="Dhaka">Dhaka</option>
+     <option value="Dhaka">Mohakhali </option>
+     <option value="Dhaka">Mymensigh </option>
+     <option value="Dhaka">Cox bazar </option>
+     <option value="Dhaka">Sonargao </option>
+     <option value="Dhaka">Sylet  </option>
      </select>
 </div>
 <div className="col-md-12 p-1 col-lg-12 col-sm-12 col-12">
      <label className="form-label">Choose Payment Method</label>
-     <select   className="form-control">
+     <select onChange={this.paymentMethodOnChange}  className="form-control">
      <option value="">Choose</option>
      <option value="Cash On Delivery">Cash On Delivery</option>
-     <option value="Cash On Delivery">Stripe</option>
+     <option value="Cash On Delivery">Bkash</option>
+     <option value="Cash On Delivery">Nagad</option>
      </select>
 </div>
 <div className="col-md-12 p-1 col-lg-12 col-sm-12 col-12">
      <label className="form-label">Your Name</label>
-     <input  className="form-control" type="text" placeholder=""/>
+     <input onChange={this.nameOnChange} className="form-control" type="text" placeholder=""/>
 </div>
 
 <div className="col-md-12 p-1 col-lg-12 col-sm-12 col-12">
      <label className="form-label">Delivery Address</label>
-     <textarea   rows={2}  className="form-control" type="text" placeholder=""/>
+     <textarea rows={2} onChange={this.addressOnChange} className="form-control" type="text" placeholder=""/>
 </div>
 <div className="col-md-12 p-1 col-lg-12 col-sm-12 col-12">
-     <button   className="btn  site-btn">Confirm Order </button>
+     <button onClick={this.confirmOnClick}  className="btn  site-btn">Confirm Order </button>
 </div>
 </div>
                     </div>
@@ -195,6 +282,8 @@ class Cart extends Component {
                </Container>
 
                     {this.PageRefresh()}
+                    
+                    {this.PageRedirect()}
                     
               </Fragment>
           )
