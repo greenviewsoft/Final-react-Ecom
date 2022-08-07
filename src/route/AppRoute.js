@@ -95,7 +95,7 @@ class AppRoute extends Component {
                                         <Route exact path="/profile" render={(props) => <ProfilePage user={this.state.user} setUser={this.setUser}   {...props} key={Date.now()} />} />
 
                                 
-                                        <Route exact path="/orderlist/" render={(props) => <OrderListPage {...props} key={Date.now()
+                                        <Route exact path="/orderlist/" render={(props) => <OrderListPage  user={this.state.user} {...props} key={Date.now()
                                         } />} />
 
                                 </Switch>
