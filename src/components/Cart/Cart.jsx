@@ -174,6 +174,11 @@ axios.post(AppURL.CartOrder,MyFromData).then(response =>{
 }
      
      render() {
+    // if user is not logged in, redirect to login page
+    if (!localStorage.getItem('token')) {
+     return <Redirect to="/login"/>
+  }
+
           const MyList = this.state.ProductData;
           let totalPriceSum=0;
           const MyView = MyList.map((ProductList, i) => {

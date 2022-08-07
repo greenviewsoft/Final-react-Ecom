@@ -3,6 +3,7 @@ import AppURL from '../../api/AppURL';
 import axios from 'axios'
 import { Container, Row, Col, Card, Button, Modal } from 'react-bootstrap';
 import cogoToast from 'cogo-toast';
+import { Redirect } from 'react-router-dom';
 
 class OrderList extends Component {
   constructor(){
@@ -115,6 +116,11 @@ ReviewModalOpen = (product_code,product_name) =>{
 
 
   render() {
+
+        // if user is not logged in, redirect to login page
+        if (!localStorage.getItem('token')) {
+          return <Redirect to="/login"/>
+       }
 
     const MyList = this.state.ProductData;
     const MyView = MyList.map((ProductList, i) => {

@@ -2,6 +2,7 @@ import React, { Component, Fragment } from 'react'
 import { Container, Row, Col, Card, Button, Modal } from 'react-bootstrap'
 import AppURL from '../../api/AppURL';
 import axios from 'axios'
+import { Redirect } from 'react-router-dom';
 
 class Notification extends Component {
 
@@ -45,7 +46,12 @@ class Notification extends Component {
            this.setState({Notificationmsg:Nmsg,Notificationtitle:Ntitle,Notificationdate:Ndate });
       }; 
 
-    render() {
+     render() {
+         
+              // if user is not logged in, redirect to login page
+     if (!localStorage.getItem('token')) {
+          return <Redirect to="/login"/>
+       }
         const NotificationList = this.state.NotificationData;
         const MyView = NotificationList.map((NotificationList, i) => {
             return  <Col className="p-1" md={6} lg={6} sm={12} xs={12}>
