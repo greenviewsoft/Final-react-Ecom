@@ -11,7 +11,7 @@ class Category extends Component {
           const Category = this.props.Category;
           const MyView = MyList.map((ProductList, i) => {
 
-               console.log(ProductList);
+               // console.log(ProductList);
 
                if (ProductList.special_price == "na") {
                     return <Col className="p-0" xl={3} lg={3} md={3} sm={6} xs={6}>
@@ -59,7 +59,7 @@ class Category extends Component {
 </Breadcrumb>
 </div>
 
-                         <div className="section-title text-center mb-55"><h2>{Category}</h2>
+                         <div className="section-title text-center mb-40"><h2>{Category}</h2>
 
                          </div>
 
